@@ -38,50 +38,150 @@ RSS feeds are a way for websites to publish updates to their content. This proje
 ### User Management
 
 - **POST /users**: Create a new user.
-  ```sh
-  curl -X POST -d '{"name":"John Doe"}' http://localhost:8080/users
-  ```
+  - **Request Body:**
+    ```json
+    {
+      "name": "John Doe"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "user-id",
+      "created_at": "2024-06-26T00:00:00Z",
+      "updated_at": "2024-06-26T00:00:00Z",
+      "name": "John Doe",
+      "api_key": "user-api-key"
+    }
+    ```
 
 - **GET /users**: Retrieve user information (authentication required).
-  ```sh
-  curl -H "Authorization: Bearer <API_KEY>" http://localhost:8080/users
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "user-id",
+      "created_at": "2024-06-26T00:00:00Z",
+      "updated_at": "2024-06-26T00:00:00Z",
+      "name": "John Doe",
+      "api_key": "user-api-key"
+    }
+    ```
 
 ### Feed Management
 
 - **POST /feeds**: Create a new feed (authentication required).
-  ```sh
-  curl -X POST -H "Authorization: Bearer <API_KEY>" -d '{"name":"Example Feed","url":"http://example.com/rss"}' http://localhost:8080/feeds
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
+  - **Request Body:**
+    ```json
+    {
+      "name": "Example Feed",
+      "url": "http://example.com/rss"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "feed-id",
+      "created_at": "2024-06-26T00:00:00Z",
+      "updated_at": "2024-06-26T00:00:00Z",
+      "name": "Example Feed",
+      "url": "http://example.com/rss",
+      "user_id": "user-id"
+    }
+    ```
 
 - **GET /feeds**: Retrieve a list of all feeds.
-  ```sh
-  curl http://localhost:8080/feeds
-  ```
+  - **Response:**
+    ```json
+    [
+      {
+        "id": "feed-id",
+        "created_at": "2024-06-26T00:00:00Z",
+        "updated_at": "2024-06-26T00:00:00Z",
+        "name": "Example Feed",
+        "url": "http://example.com/rss",
+        "user_id": "user-id"
+      }
+    ]
+    ```
 
 ### Post Management
 
 - **GET /posts**: Retrieve posts for the authenticated user (authentication required).
-  ```sh
-  curl -H "Authorization: Bearer <API_KEY>" http://localhost:8080/posts
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
+  - **Response:**
+    ```json
+    [
+      {
+        "id": "post-id",
+        "created_at": "2024-06-26T00:00:00Z",
+        "updated_at": "2024-06-26T00:00:00Z",
+        "title": "Post Title",
+        "description": "Post Description",
+        "published_at": "2024-06-26T00:00:00Z",
+        "url": "http://example.com/post",
+        "feed_id": "feed-id"
+      }
+    ]
+    ```
 
 ### Feed Follow Management
 
 - **POST /feed_follows**: Follow a feed (authentication required).
-  ```sh
-  curl -X POST -H "Authorization: Bearer <API_KEY>" -d '{"feed_id":"<FEED_ID>"}' http://localhost:8080/feed_follows
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
+  - **Request Body:**
+    ```json
+    {
+      "feed_id": "feed-id"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "feed-follow-id",
+      "created_at": "2024-06-26T00:00:00Z",
+      "updated_at": "2024-06-26T00:00:00Z",
+      "user_id": "user-id",
+      "feed_id": "feed-id"
+    }
+    ```
 
 - **GET /feed_follows**: Retrieve a list of feed follows for the authenticated user (authentication required).
-  ```sh
-  curl -H "Authorization: Bearer <API_KEY>" http://localhost:8080/feed_follows
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
+  - **Response:**
+    ```json
+    [
+      {
+        "id": "feed-follow-id",
+        "created_at": "2024-06-26T00:00:00Z",
+        "updated_at": "2024-06-26T00:00:00Z",
+        "user_id": "user-id",
+        "feed_id": "feed-id"
+      }
+    ]
+    ```
 
 - **DELETE /feed_follows/{feedFollowID}**: Unfollow a feed (authentication required).
-  ```sh
-  curl -X DELETE -H "Authorization: Bearer <API_KEY>" http://localhost:8080/feed_follows/<FEED_FOLLOW_ID>
-  ```
+  - **Headers:**
+    ```
+    Authorization: ApiKey {API_KEY}
+    ```
 
 ## Acknowledgements
 
